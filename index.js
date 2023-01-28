@@ -1,9 +1,9 @@
-require("dotenv").config;
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const formData = require("form-data");
 const Mailgun = require("mailgun.js");
+const formData = require("form-data"); // il faut faire ça pour l'utiliser c'est comme ça que mailgun fonctionne
 
 const app = express();
 app.use(cors());
@@ -12,7 +12,7 @@ app.use(express.json());
 const mailgun = new Mailgun(formData);
 const client = mailgun.client({
   username: "Lucas",
-  key: process.env.API_KEY_MAILGUN, //! ici changer
+  key: process.env.API_KEY_MAILGUN,
 });
 
 app.get("/", (req, res) => {
@@ -30,13 +30,15 @@ app.post("/form", async (req, res) => {
       text: req.body.message,
     };
 
-    const response = await client.message.create(
+    const response = await client.messages.create(
       process.env.DOMAIN_MAILGUN,
       messageData
     );
 
-    console.log("response>>", response);
+    // console.log("response>>", response);
+    res.status(200).json(response);
   } catch (error) {
+    console.log(error.message);
     res.status(400).json(error);
   }
 });
