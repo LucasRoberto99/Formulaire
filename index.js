@@ -35,7 +35,8 @@ app.post("/form", async (req, res) => {
       messageData
     );
 
-    // console.log("response>>", response);
+    console.log("response>>", response);
+
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
